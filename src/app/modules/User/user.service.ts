@@ -183,14 +183,16 @@ const updateMyProfile = async (user: any, payload: any) => {
       userId: user.id,
     },
   });
+  console.log(profile);
 
   if (!profile) {
     throw new ApiError(httpStatus.NOT_FOUND, "Profile not found");
   }
+  console.log("service");
 
-  const result = await prisma.userProfile.update({
+  const result = await prisma.user.update({
     where: {
-      userId: user.id,
+      id: user.id,
     },
     data: payload,
   });

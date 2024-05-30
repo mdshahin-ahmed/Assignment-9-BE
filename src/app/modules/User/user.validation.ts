@@ -44,16 +44,30 @@ const loginUserValidation = z.object({
 
 const updateProfileValidation = z.object({
   body: z.object({
-    bio: z
-      .string({
-        invalid_type_error: "Bio should string.",
+    availability: z
+      .boolean({
+        invalid_type_error: "Availability must be a boolean",
       })
       .optional(),
-    lastDonationDate: z
-      .string({
-        invalid_type_error: "Last Donation Date should string.",
-      })
+    bloodType: z
+      .enum(
+        [
+          "O_POSITIVE",
+          "O_NEGATIVE",
+          "A_POSITIVE",
+          "A_NEGATIVE",
+          "B_POSITIVE",
+          "B_NEGATIVE",
+          "AB_POSITIVE",
+          "AB_NEGATIVE",
+        ],
+        {
+          invalid_type_error: "Invalid blood type",
+        }
+      )
       .optional(),
+    location: z.string().min(1, { message: "Location is required" }).optional(),
+    name: z.string().min(1, { message: "Name is required" }).optional(),
   }),
 });
 

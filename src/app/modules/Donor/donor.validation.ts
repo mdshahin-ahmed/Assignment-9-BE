@@ -27,6 +27,10 @@ const requestDonorValidation = z.object({
       required_error: "reason is required.",
       invalid_type_error: "reason should string.",
     }),
+    termsAndCondition: z.boolean({
+      required_error: "termsAndCondition is required.",
+      invalid_type_error: "termsAndCondition should string.",
+    }),
   }),
 });
 const updateRequestStatusValidation = z.object({

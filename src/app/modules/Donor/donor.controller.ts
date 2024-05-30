@@ -62,9 +62,24 @@ const updateRequestStatus = catchAsync(
   }
 );
 
+const getSingleDonor = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const { donorId } = req.params;
+    const result = await donorServices.getSingleDonor(donorId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Donor retrieved successfully!",
+      data: result,
+    });
+  }
+);
+
 export const donorControllers = {
   getAllDonor,
   donationRequest,
   getMyDonationRequest,
   updateRequestStatus,
+  getSingleDonor,
 };

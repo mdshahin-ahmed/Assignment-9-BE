@@ -20,5 +20,6 @@ router.put(
   validateData(donorValidation.updateRequestStatusValidation),
   donorControllers.updateRequestStatus
 );
+router.get("/donor/:donorId", donorControllers.getSingleDonor);
 
 export const donorRoutes = router;

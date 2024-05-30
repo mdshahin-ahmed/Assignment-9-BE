@@ -117,6 +117,7 @@ const donationRequest = async (params: any, user: any) => {
       requestStatus: true,
       createdAt: true,
       updatedAt: true,
+      termsAndCondition: true,
       donor: {
         select: {
           id: true,
@@ -190,10 +191,34 @@ const updateRequestStatus = async (
 
   return result;
 };
+const getSingleDonor = async (id: string) => {
+  const request = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if (!request) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Donor not found");
+  }
+
+  return {
+    id: request.id,
+    name: request.name,
+    email: request.email,
+    bloodType: request.bloodType,
+    location: request.location,
+    availability: request.availability,
+    role: request.role,
+    userStatus: request.userStatus,
+    createdAt: request.createdAt,
+    updatedAt: request.updatedAt,
+  };
+};
 
 export const donorServices = {
   getAllDonor,
   donationRequest,
   getMyDonationRequest,
   updateRequestStatus,
+  getSingleDonor,
 };
