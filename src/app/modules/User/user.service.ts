@@ -60,7 +60,6 @@ const createUser = async (payload: TUser) => {
     const user = await transactionClient.user.create({
       data: userData,
     });
-    console.log(user);
 
     const profile = await transactionClient.userProfile.create({
       data: { ...profileData, userId: user.id } as any,
@@ -123,7 +122,6 @@ const createAdmin = async (payload: TUser) => {
     const user = await transactionClient.user.create({
       data: userData,
     });
-    console.log(user);
 
     const profile = await transactionClient.userProfile.create({
       data: { ...profileData, userId: user.id } as any,
@@ -183,12 +181,10 @@ const updateMyProfile = async (user: any, payload: any) => {
       userId: user.id,
     },
   });
-  console.log(profile);
 
   if (!profile) {
     throw new ApiError(httpStatus.NOT_FOUND, "Profile not found");
   }
-  console.log("service");
 
   const result = await prisma.user.update({
     where: {
@@ -197,7 +193,61 @@ const updateMyProfile = async (user: any, payload: any) => {
     data: payload,
   });
 
-  return result;
+  return {
+    id: result.id,
+    name: result.name,
+    email: result.email,
+    bloodType: result.bloodType,
+    location: result.location,
+    availability: result.availability,
+    role: result.role,
+    userStatus: result.userStatus,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
+  };
+};
+
+const changePassword = async (user: any, payload: any) => {
+  const profile = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+    },
+  });
+
+  if (!profile) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.oldPassword,
+    profile.password
+  );
+
+  if (!isCorrectPassword) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Password incorrect!");
+  }
+
+  const hashedPassword: string = await bcrypt.hash(payload.newPassword, 12);
+
+  const result = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: { password: hashedPassword },
+  });
+
+  return {
+    id: result.id,
+    name: result.name,
+    email: result.email,
+    bloodType: result.bloodType,
+    location: result.location,
+    availability: result.availability,
+    role: result.role,
+    userStatus: result.userStatus,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
+  };
 };
 
 export const userService = {
@@ -206,4 +256,5 @@ export const userService = {
   getMyProfile,
   updateMyProfile,
   createAdmin,
+  changePassword,
 };

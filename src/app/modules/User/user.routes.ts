@@ -21,5 +21,6 @@ userRoute.get("/user", userController.getUser);
 userRoute.get("/my-profile", auth(), userController.getMyProfile);
 
 userRoute.put("/my-profile", auth(), userController.updateMyProfile);
+userRoute.put("/change-password", auth(), userController.changePassword);
 
 export const userRoutes = userRoute;
