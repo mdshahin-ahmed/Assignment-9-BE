@@ -51,6 +51,17 @@ const getMyProfile = catchAsync(
   }
 );
 
+const getUsers = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.getUsers();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Users retrieved successfully",
+    data: result,
+  });
+});
+
 const updateMyProfile = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
     const user = req.user;
@@ -79,6 +90,20 @@ const changePassword = catchAsync(
   }
 );
 
+const updateUser = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const { userId } = req.params;
+    const result = await userService.updateUser(userId, req.body);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User updated successfully",
+      data: result,
+    });
+  }
+);
+
 export const userController = {
   createUser,
   createAdmin,
@@ -86,4 +111,6 @@ export const userController = {
   getMyProfile,
   updateMyProfile,
   changePassword,
+  getUsers,
+  updateUser,
 };

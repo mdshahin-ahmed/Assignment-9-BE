@@ -145,14 +145,18 @@ const getMyDonationRequest = async (user: any) => {
       id: true,
       donorId: true,
       requesterId: true,
-      phoneNumber: true,
-      dateOfDonation: true,
       hospitalName: true,
       hospitalAddress: true,
       reason: true,
       requestStatus: true,
       createdAt: true,
       updatedAt: true,
+      phoneNumber: true,
+      donor: {
+        select: {
+          bloodType: true,
+        },
+      },
       requester: {
         select: {
           id: true,
@@ -167,10 +171,34 @@ const getMyDonationRequest = async (user: any) => {
   });
   return result;
 };
+const getMyBloodRequest = async (user: any) => {
+  const result = await prisma.request.findMany({
+    where: {
+      requesterId: user.id,
+    },
+    select: {
+      id: true,
+      donorId: true,
+      requesterId: true,
+      requestStatus: true,
+      donor: {
+        select: {
+          name: true,
+          email: true,
+          bloodType: true,
+        },
+      },
+    },
+  });
+  return result;
+};
+
 const updateRequestStatus = async (
   id: any,
   payload: { requestStatus: Status }
 ) => {
+  console.log(id);
+
   const request = await prisma.request.findUnique({
     where: {
       id: id,
@@ -196,23 +224,25 @@ const getSingleDonor = async (id: string) => {
     where: {
       id: id,
     },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      bloodType: true,
+      location: true,
+      availability: true,
+      role: true,
+      userStatus: true,
+      createdAt: true,
+      updatedAt: true,
+      userProfile: true,
+    },
   });
   if (!request) {
     throw new ApiError(httpStatus.NOT_FOUND, "Donor not found");
   }
 
-  return {
-    id: request.id,
-    name: request.name,
-    email: request.email,
-    bloodType: request.bloodType,
-    location: request.location,
-    availability: request.availability,
-    role: request.role,
-    userStatus: request.userStatus,
-    createdAt: request.createdAt,
-    updatedAt: request.updatedAt,
-  };
+  return request;
 };
 
 export const donorServices = {
@@ -221,4 +251,5 @@ export const donorServices = {
   getMyDonationRequest,
   updateRequestStatus,
   getSingleDonor,
+  getMyBloodRequest,
 };

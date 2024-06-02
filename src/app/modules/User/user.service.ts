@@ -175,6 +175,11 @@ const getMyProfile = async (user: any) => {
 
   return result;
 };
+const getUsers = async () => {
+  const result = await prisma.user.findMany();
+
+  return result;
+};
 const updateMyProfile = async (user: any, payload: any) => {
   const profile = await prisma.userProfile.findUnique({
     where: {
@@ -189,6 +194,37 @@ const updateMyProfile = async (user: any, payload: any) => {
   const result = await prisma.user.update({
     where: {
       id: user.id,
+    },
+    data: payload,
+  });
+
+  return {
+    id: result.id,
+    name: result.name,
+    email: result.email,
+    bloodType: result.bloodType,
+    location: result.location,
+    availability: result.availability,
+    role: result.role,
+    userStatus: result.userStatus,
+    createdAt: result.createdAt,
+    updatedAt: result.updatedAt,
+  };
+};
+const updateUser = async (userId: any, payload: any) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
     },
     data: payload,
   });
@@ -257,4 +293,6 @@ export const userService = {
   updateMyProfile,
   createAdmin,
   changePassword,
+  getUsers,
+  updateUser,
 };

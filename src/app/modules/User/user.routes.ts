@@ -17,10 +17,12 @@ userRoute.post(
   userController.createAdmin
 );
 userRoute.get("/user", userController.getUser);
+userRoute.get("/users", auth(), userController.getUsers);
 
 userRoute.get("/my-profile", auth(), userController.getMyProfile);
 
 userRoute.put("/my-profile", auth(), userController.updateMyProfile);
 userRoute.put("/change-password", auth(), userController.changePassword);
+userRoute.put("/user/:userId", auth(), userController.updateUser);
 
 export const userRoutes = userRoute;

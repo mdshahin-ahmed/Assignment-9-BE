@@ -14,6 +14,7 @@ router.post(
   donorControllers.donationRequest
 );
 router.get("/donation-request", auth(), donorControllers.getMyDonationRequest);
+router.get("/blood-request", auth(), donorControllers.getMyBloodRequest);
 router.put(
   "/donation-request/:requestId",
   auth(),

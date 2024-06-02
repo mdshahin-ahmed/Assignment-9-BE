@@ -48,6 +48,20 @@ const getMyDonationRequest = catchAsync(
   }
 );
 
+const getMyBloodRequest = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const user = req.user;
+    const result = await donorServices.getMyBloodRequest(user);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Blood requests retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 const updateRequestStatus = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
     const { requestId } = req.params;
@@ -82,4 +96,5 @@ export const donorControllers = {
   getMyDonationRequest,
   updateRequestStatus,
   getSingleDonor,
+  getMyBloodRequest,
 };
