@@ -122,6 +122,7 @@ const donationRequest = (params, user) => __awaiter(void 0, void 0, void 0, func
             requestStatus: true,
             createdAt: true,
             updatedAt: true,
+            termsAndCondition: true,
             donor: {
                 select: {
                     id: true,
@@ -148,14 +149,18 @@ const getMyDonationRequest = (user) => __awaiter(void 0, void 0, void 0, functio
             id: true,
             donorId: true,
             requesterId: true,
-            phoneNumber: true,
-            dateOfDonation: true,
             hospitalName: true,
             hospitalAddress: true,
             reason: true,
             requestStatus: true,
             createdAt: true,
             updatedAt: true,
+            phoneNumber: true,
+            donor: {
+                select: {
+                    bloodType: true,
+                },
+            },
             requester: {
                 select: {
                     id: true,
@@ -170,7 +175,29 @@ const getMyDonationRequest = (user) => __awaiter(void 0, void 0, void 0, functio
     });
     return result;
 });
+const getMyBloodRequest = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.prisma.request.findMany({
+        where: {
+            requesterId: user.id,
+        },
+        select: {
+            id: true,
+            donorId: true,
+            requesterId: true,
+            requestStatus: true,
+            donor: {
+                select: {
+                    name: true,
+                    email: true,
+                    bloodType: true,
+                },
+            },
+        },
+    });
+    return result;
+});
 const updateRequestStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id);
     const request = yield prisma_1.prisma.request.findUnique({
         where: {
             id: id,
@@ -189,9 +216,35 @@ const updateRequestStatus = (id, payload) => __awaiter(void 0, void 0, void 0, f
     });
     return result;
 });
+const getSingleDonor = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const request = yield prisma_1.prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            bloodType: true,
+            location: true,
+            availability: true,
+            role: true,
+            userStatus: true,
+            createdAt: true,
+            updatedAt: true,
+            userProfile: true,
+        },
+    });
+    if (!request) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "Donor not found");
+    }
+    return request;
+});
 exports.donorServices = {
     getAllDonor,
     donationRequest,
     getMyDonationRequest,
     updateRequestStatus,
+    getSingleDonor,
+    getMyBloodRequest,
 };

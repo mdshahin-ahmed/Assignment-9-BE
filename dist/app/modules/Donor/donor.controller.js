@@ -51,6 +51,16 @@ const getMyDonationRequest = (0, catchAsync_1.catchAsync)((req, res) => __awaite
         data: result,
     });
 }));
+const getMyBloodRequest = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield donor_service_1.donorServices.getMyBloodRequest(user);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Blood requests retrieved successfully",
+        data: result,
+    });
+}));
 const updateRequestStatus = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { requestId } = req.params;
     const result = yield donor_service_1.donorServices.updateRequestStatus(requestId, req.body);
@@ -61,9 +71,21 @@ const updateRequestStatus = (0, catchAsync_1.catchAsync)((req, res) => __awaiter
         data: result,
     });
 }));
+const getSingleDonor = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { donorId } = req.params;
+    const result = yield donor_service_1.donorServices.getSingleDonor(donorId);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Donor retrieved successfully!",
+        data: result,
+    });
+}));
 exports.donorControllers = {
     getAllDonor,
     donationRequest,
     getMyDonationRequest,
     updateRequestStatus,
+    getSingleDonor,
+    getMyBloodRequest,
 };

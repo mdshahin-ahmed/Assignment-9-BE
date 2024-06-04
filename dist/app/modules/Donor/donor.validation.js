@@ -28,6 +28,10 @@ const requestDonorValidation = zod_1.z.object({
             required_error: "reason is required.",
             invalid_type_error: "reason should string.",
         }),
+        termsAndCondition: zod_1.z.boolean({
+            required_error: "termsAndCondition is required.",
+            invalid_type_error: "termsAndCondition should string.",
+        }),
     }),
 });
 const updateRequestStatusValidation = zod_1.z.object({

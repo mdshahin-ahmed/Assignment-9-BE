@@ -13,5 +13,7 @@ const router = express_1.default.Router();
 router.get("/donor-list", donor_controller_1.donorControllers.getAllDonor);
 router.post("/donation-request", (0, auth_1.default)(), (0, validateData_1.default)(donor_validation_1.donorValidation.requestDonorValidation), donor_controller_1.donorControllers.donationRequest);
 router.get("/donation-request", (0, auth_1.default)(), donor_controller_1.donorControllers.getMyDonationRequest);
+router.get("/blood-request", (0, auth_1.default)(), donor_controller_1.donorControllers.getMyBloodRequest);
 router.put("/donation-request/:requestId", (0, auth_1.default)(), (0, validateData_1.default)(donor_validation_1.donorValidation.updateRequestStatusValidation), donor_controller_1.donorControllers.updateRequestStatus);
+router.get("/donor/:donorId", donor_controller_1.donorControllers.getSingleDonor);
 exports.donorRoutes = router;

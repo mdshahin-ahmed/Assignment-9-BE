@@ -24,17 +24,9 @@ const registerUserValidation = zod_1.z.object({
             required_error: "Location is required.",
             invalid_type_error: "Location should string.",
         }),
-        age: zod_1.z.number({
-            required_error: "Age is required.",
-            invalid_type_error: "Age should number.",
-        }),
         bio: zod_1.z.string({
             required_error: "Bio is required.",
             invalid_type_error: "Bio should string.",
-        }),
-        lastDonationDate: zod_1.z.string({
-            required_error: "Last Donation Date is required.",
-            invalid_type_error: "Last Donation Date should string.",
         }),
     }),
 });
@@ -52,21 +44,27 @@ const loginUserValidation = zod_1.z.object({
 });
 const updateProfileValidation = zod_1.z.object({
     body: zod_1.z.object({
-        age: zod_1.z
-            .number({
-            invalid_type_error: "Age should number.",
+        availability: zod_1.z
+            .boolean({
+            invalid_type_error: "Availability must be a boolean",
         })
             .optional(),
-        bio: zod_1.z
-            .string({
-            invalid_type_error: "Bio should string.",
+        bloodType: zod_1.z
+            .enum([
+            "O_POSITIVE",
+            "O_NEGATIVE",
+            "A_POSITIVE",
+            "A_NEGATIVE",
+            "B_POSITIVE",
+            "B_NEGATIVE",
+            "AB_POSITIVE",
+            "AB_NEGATIVE",
+        ], {
+            invalid_type_error: "Invalid blood type",
         })
             .optional(),
-        lastDonationDate: zod_1.z
-            .string({
-            invalid_type_error: "Last Donation Date should string.",
-        })
-            .optional(),
+        location: zod_1.z.string().min(1, { message: "Location is required" }).optional(),
+        name: zod_1.z.string().min(1, { message: "Name is required" }).optional(),
     }),
 });
 exports.userValidation = {
