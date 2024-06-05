@@ -152,6 +152,7 @@ const getMyDonationRequest = async (user: any) => {
       createdAt: true,
       updatedAt: true,
       phoneNumber: true,
+      dateOfDonation: true,
       donor: {
         select: {
           bloodType: true,

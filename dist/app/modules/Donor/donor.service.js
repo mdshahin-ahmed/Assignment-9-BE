@@ -156,6 +156,7 @@ const getMyDonationRequest = (user) => __awaiter(void 0, void 0, void 0, functio
             createdAt: true,
             updatedAt: true,
             phoneNumber: true,
+            dateOfDonation: true,
             donor: {
                 select: {
                     bloodType: true,
