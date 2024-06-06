@@ -1,6 +1,6 @@
 ### Assignment 9 BE
 
-Video link: ()
+Video link: (https://drive.google.com/file/d/1p3io8TO3vS6maPPEh7hBeeRUeysHGDY0/view)
 
 Frontend live site link: (https://assignment-9-fe.vercel.app/)
 
@@ -9,6 +9,8 @@ Backend live site link: (https://assignment-9-two.vercel.app/)
 Frontend Github link: (https://github.com/mdshahin-ahmed/assignment-9-fe)
 
 Backend Github link: (https://github.com/mdshahin-ahmed/Assignment-9-BE)
+
+### Credentials:
 
 #### 1. Admin
 
@@ -20,8 +22,22 @@ password: **123456**
 
 **Every password is** : **123456**
 
-email: **user1@yopmail.com**
+email: **requester@yopmail.com**
+password: **123456**
 
+email: **donor@yopmail.com**
+password: **123456**
+
+email: **user1@yopmail.com**
+password: **123456**
+
+email: **user2@yopmail.com**
+password: **123456**
+
+email: **user3@yopmail.com**
+password: **123456**
+
+email: **user4@yopmail.com**
 password: **123456**
 
 #### If you want to run locally first you need to clone this repository
