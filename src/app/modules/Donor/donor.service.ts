@@ -133,6 +133,16 @@ const donationRequest = async (params: any, user: any) => {
       },
     },
   });
+
+  await prisma.analytics.update({
+    where: { label: "Blood Request" },
+    data: {
+      value: {
+        increment: 1,
+      },
+    },
+  });
+
   return result;
 };
 
@@ -198,8 +208,6 @@ const updateRequestStatus = async (
   id: any,
   payload: { requestStatus: Status }
 ) => {
-  console.log(id);
-
   const request = await prisma.request.findUnique({
     where: {
       id: id,
@@ -217,6 +225,28 @@ const updateRequestStatus = async (
       requestStatus: payload.requestStatus,
     },
   });
+
+  console.log(payload.requestStatus);
+  if (payload.requestStatus === "APPROVED") {
+    await prisma.analytics.update({
+      where: { label: "Blood Donation" },
+      data: {
+        value: {
+          increment: 1,
+        },
+      },
+    });
+  }
+  if (payload.requestStatus === "REJECTED") {
+    await prisma.analytics.update({
+      where: { label: "Blood Donation" },
+      data: {
+        value: {
+          decrement: 1,
+        },
+      },
+    });
+  }
 
   return result;
 };
@@ -246,6 +276,11 @@ const getSingleDonor = async (id: string) => {
   return request;
 };
 
+const getAnalytics = async () => {
+  const result = await prisma.analytics.findMany();
+  return result;
+};
+
 export const donorServices = {
   getAllDonor,
   donationRequest,
@@ -253,4 +288,5 @@ export const donorServices = {
   updateRequestStatus,
   getSingleDonor,
   getMyBloodRequest,
+  getAnalytics,
 };

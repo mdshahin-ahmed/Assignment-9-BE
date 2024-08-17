@@ -90,6 +90,18 @@ const getSingleDonor = catchAsync(
   }
 );
 
+const getAnalytics = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const result = await donorServices.getAnalytics();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Analytics retrieved successfully!",
+      data: result,
+    });
+  }
+);
+
 export const donorControllers = {
   getAllDonor,
   donationRequest,
@@ -97,4 +109,5 @@ export const donorControllers = {
   updateRequestStatus,
   getSingleDonor,
   getMyBloodRequest,
+  getAnalytics,
 };

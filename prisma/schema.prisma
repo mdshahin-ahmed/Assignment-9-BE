@@ -59,6 +59,12 @@ model Request {
   @@map("requests")
 }
 
+model Analytics {
+  id    String
+  label String @unique
+  value Int
+}
+
 enum Status {
   PENDING
   APPROVED
