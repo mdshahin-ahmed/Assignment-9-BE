@@ -138,6 +138,14 @@ const donationRequest = (params, user) => __awaiter(void 0, void 0, void 0, func
             },
         },
     });
+    yield prisma_1.prisma.analytics.update({
+        where: { label: "Blood Request" },
+        data: {
+            value: {
+                increment: 1,
+            },
+        },
+    });
     return result;
 });
 const getMyDonationRequest = (user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -198,7 +206,6 @@ const getMyBloodRequest = (user) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const updateRequestStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(id);
     const request = yield prisma_1.prisma.request.findUnique({
         where: {
             id: id,
@@ -215,6 +222,27 @@ const updateRequestStatus = (id, payload) => __awaiter(void 0, void 0, void 0, f
             requestStatus: payload.requestStatus,
         },
     });
+    console.log(payload.requestStatus);
+    if (payload.requestStatus === "APPROVED") {
+        yield prisma_1.prisma.analytics.update({
+            where: { label: "Blood Donation" },
+            data: {
+                value: {
+                    increment: 1,
+                },
+            },
+        });
+    }
+    if (payload.requestStatus === "REJECTED") {
+        yield prisma_1.prisma.analytics.update({
+            where: { label: "Blood Donation" },
+            data: {
+                value: {
+                    decrement: 1,
+                },
+            },
+        });
+    }
     return result;
 });
 const getSingleDonor = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -241,6 +269,10 @@ const getSingleDonor = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return request;
 });
+const getAnalytics = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.prisma.analytics.findMany();
+    return result;
+});
 exports.donorServices = {
     getAllDonor,
     donationRequest,
@@ -248,4 +280,5 @@ exports.donorServices = {
     updateRequestStatus,
     getSingleDonor,
     getMyBloodRequest,
+    getAnalytics,
 };
