@@ -97,6 +97,7 @@ const donationRequest = async (params: any, user: any) => {
       id: params.donorId,
     },
   });
+
   if (!donor) {
     throw new ApiError(httpStatus.NOT_FOUND, "Donor not found");
   }
@@ -134,12 +135,28 @@ const donationRequest = async (params: any, user: any) => {
     },
   });
 
-  await prisma.analytics.update({
+  // const test = await prisma.analytics.update({
+  //   where: { label: "Blood Request" },
+  //   data: {
+  //     value: {
+  //       increment: 1,
+  //     },
+  //   },
+  // });
+
+  // console.log(test);
+
+  await prisma.analytics.upsert({
     where: { label: "Blood Request" },
-    data: {
+    update: {
       value: {
         increment: 1,
       },
+    },
+    create: {
+      id: "Blood Request",
+      label: "Blood Request",
+      value: 1,
     },
   });
 
@@ -227,23 +244,34 @@ const updateRequestStatus = async (
   });
 
   console.log(payload.requestStatus);
+
   if (payload.requestStatus === "APPROVED") {
-    await prisma.analytics.update({
+    await prisma.analytics.upsert({
       where: { label: "Blood Donation" },
-      data: {
+      update: {
         value: {
           increment: 1,
         },
       },
+      create: {
+        id: "Blood Donation",
+        label: "Blood Donation",
+        value: 1,
+      },
     });
   }
   if (payload.requestStatus === "REJECTED") {
-    await prisma.analytics.update({
+    await prisma.analytics.upsert({
       where: { label: "Blood Donation" },
-      data: {
+      update: {
         value: {
           decrement: 1,
         },
+      },
+      create: {
+        id: "Blood Donation",
+        label: "Blood Donation",
+        value: 1,
       },
     });
   }

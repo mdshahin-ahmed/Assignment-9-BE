@@ -138,12 +138,26 @@ const donationRequest = (params, user) => __awaiter(void 0, void 0, void 0, func
             },
         },
     });
-    yield prisma_1.prisma.analytics.update({
+    // const test = await prisma.analytics.update({
+    //   where: { label: "Blood Request" },
+    //   data: {
+    //     value: {
+    //       increment: 1,
+    //     },
+    //   },
+    // });
+    // console.log(test);
+    yield prisma_1.prisma.analytics.upsert({
         where: { label: "Blood Request" },
-        data: {
+        update: {
             value: {
                 increment: 1,
             },
+        },
+        create: {
+            id: "Blood Request",
+            label: "Blood Request",
+            value: 1,
         },
     });
     return result;
@@ -224,22 +238,32 @@ const updateRequestStatus = (id, payload) => __awaiter(void 0, void 0, void 0, f
     });
     console.log(payload.requestStatus);
     if (payload.requestStatus === "APPROVED") {
-        yield prisma_1.prisma.analytics.update({
+        yield prisma_1.prisma.analytics.upsert({
             where: { label: "Blood Donation" },
-            data: {
+            update: {
                 value: {
                     increment: 1,
                 },
             },
+            create: {
+                id: "Blood Donation",
+                label: "Blood Donation",
+                value: 1,
+            },
         });
     }
     if (payload.requestStatus === "REJECTED") {
-        yield prisma_1.prisma.analytics.update({
+        yield prisma_1.prisma.analytics.upsert({
             where: { label: "Blood Donation" },
-            data: {
+            update: {
                 value: {
                     decrement: 1,
                 },
+            },
+            create: {
+                id: "Blood Donation",
+                label: "Blood Donation",
+                value: 1,
             },
         });
     }
